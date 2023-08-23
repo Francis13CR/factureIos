@@ -28,32 +28,36 @@
 import WebKit
 import UIKit
 class FileDownloader {
+    /**
+            funcion para descargar y guardar un archivo desde la url dada
+    */
+    
     static func loadFileSync(url: URL, completion: @escaping (String?, Error?) -> Void)
     {
         let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let destinationUrl = documentsUrl.appendingPathComponent(url.lastPathComponent)
         if FileManager().fileExists(atPath: destinationUrl.path)
         {
-            print("File already exists [\(destinationUrl.path)]")
+            print("EL archivo ya existe [\(destinationUrl.path)]") //ya existre
             completion(destinationUrl.path, nil)
         }
         else if let dataFromURL = NSData(contentsOf: url)
         {
             if dataFromURL.write(to: destinationUrl, atomically: true)
             {
-                print("file saved [\(destinationUrl.path)]")
+                print("Archivo guardado [\(destinationUrl.path)]")
                 completion(destinationUrl.path, nil)
             }
             else
             {
-                print("error saving file")
-                let error = NSError(domain:"Error saving file", code:1001, userInfo:nil)
+                print("error al guardar archivo")
+                let error = NSError(domain:"Error al guardar archivo", code:1001, userInfo:nil)
                 completion(destinationUrl.path, error)
             }
         }
         else
         {
-            let error = NSError(domain:"Error downloading file", code:1002, userInfo:nil)
+            let error = NSError(domain:"Error al descargar archivo", code:1002, userInfo:nil)
             completion(destinationUrl.path, error)
         }
     }
@@ -63,7 +67,7 @@ class FileDownloader {
         let destinationUrl = documentsUrl.appendingPathComponent(url.lastPathComponent)
         if FileManager().fileExists(atPath: destinationUrl.path)
         {
-            print("File already exists [\(destinationUrl.path)]")
+            print("el archivo ya existe [\(destinationUrl.path)]")
             completion(destinationUrl.path, nil)
         }
         else
@@ -107,6 +111,7 @@ class FileDownloader {
         }
     }
 }
+//convertir los pares clave-valor en el diccionario a una cadena de consulta URL-encodificada. Cada par clave-valor se convierte en una cadena "clave=valor" y se escapan los caracteres especiales que no son seguros en una URL.
 extension Dictionary {
     func percentEscaped() -> String {
         return map { (key, value) in
@@ -126,6 +131,7 @@ extension CharacterSet {
         return allowed
     }()
 }
+//Esta función formatea el número Double eliminando los ceros redundantes al final de la parte fraccional.
 extension Double {
     func removeZerosFromEnd() -> String {
         let formatter = NumberFormatter()
@@ -183,7 +189,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UIDo
     var useSplashScreen: Bool! = true
     var loadingError: Bool! = false
     let refreshControl = UIRefreshControl()
-    @objc func reloadWebView(_ sender: UIRefreshControl) {
+    @objc func reloadWebView(_ sender: UIRefreshControl) { //recargar en caso de que exista error
         if loadingError == true
         {
             loadingError = false
@@ -284,6 +290,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UIDo
         {
         }
     }
+    //funcion para cargar la vista de la web
     @objc func LoadWebView() {
         print("-LoadWebView")
         // Configuración de UIRefreshControl para permitir el usuario recargar la página tirando hacia abajo
@@ -298,7 +305,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UIDo
             "head.appendChild(meta);"
         let script: WKUserScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         webView.configuration.userContentController.addUserScript(script)
-        let url    = URL(string: "https://francis.oficina.facture.cr/app/")!
+        let url    = URL(string: "https://facture.cr/app/")!
         webView.load(URLRequest(url: url))
     }
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
@@ -365,7 +372,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UIDo
             decisionHandler(.cancel)
             let url = URL(string: (url!.absoluteURL.absoluteString))
             FileDownloader.loadFileAsync(url: url!) { (path, error) in
-                print("File downloaded to : \(path!)")
+                print("Descarga completada en : \(path!)")
                 DispatchQueue.main.async { () -> Void in
                     self.showFileWithPath(path: path!)
                  }
