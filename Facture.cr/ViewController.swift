@@ -305,8 +305,11 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UIDo
             "head.appendChild(meta);"
         let script: WKUserScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         webView.configuration.userContentController.addUserScript(script)
+        //francis.oficina.facture.cr/app/
+        //staging.facture.cr/app/
         let url    = URL(string: "https://facture.cr/app/")!
         webView.load(URLRequest(url: url))
+        webView.allowsBackForwardNavigationGestures = true
     }
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         print("didStartProvisionalNavigation - webView.url: \(String(describing: webView.url?.description))")
@@ -361,36 +364,69 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UIDo
             viewer.presentPreview(animated: true)
         }
     }
-    func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
-    {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         let url = navigationAction.request.url
-        let fileextension = url?.pathExtension
-        if(["zip", "7g", "pdf"].contains(fileextension!))
-        {
-            decisionHandler(.cancel)
-            let url = URL(string: (url!.absoluteURL.absoluteString))
-            FileDownloader.loadFileAsync(url: url!) { (path, error) in
-                print("Descarga completada en : \(path!)")
-                DispatchQueue.main.async { () -> Void in
-                    self.showFileWithPath(path: path!)
-                 }
+        let fileExtension = url?.pathExtension.lowercased()
+        
+        if let fileExtension = fileExtension {
+            if ["pdf", "xlsx", ".pdf", ".xlsx", ".xml", "xml"].contains(fileExtension) {
+                decisionHandler(.cancel)
+                
+                // Inicia la descarga del archivo (PDF o Excel)
+                let task = URLSession.shared.downloadTask(with: url!) { (tempLocation, response, error) in
+                    if let tempLocation = tempLocation, error == nil {
+                        // Mueve el archivo descargado a la ubicación deseada en el dispositivo
+                        let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                        let destinationUrl = documentsUrl.appendingPathComponent(url!.lastPathComponent)
+                        
+                        do {
+                            try FileManager.default.moveItem(at: tempLocation, to: destinationUrl)
+                            
+                            // Notifica al usuario que la descarga se ha completado
+                            DispatchQueue.main.async {
+                                // Puedes mostrar una alerta, notificación, o actualizar la interfaz de usuario
+                                let alertController = UIAlertController(title: "Descarga completada", message: "El archivo se ha descargado correctamente.", preferredStyle: .alert)
+                                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+                                    // Aquí puedes abrir el archivo descargado si es necesario
+                                    self.showFileWithPath(path: destinationUrl.path)
+                                }))
+                                self.present(alertController, animated: true, completion: nil)
+                            }
+                        } catch {
+                            print("Error al mover el archivo descargado: \(error.localizedDescription)")
+                        }
+                    }
+                }
+                task.resume()
+            } else if ["zip", "7g"].contains(fileExtension) {
+                // Comportamiento específico para otros tipos de archivos (zip, 7g)
+       
+                
+                decisionHandler(.cancel)
+                let url = URL(string: (url!.absoluteURL.absoluteString))
+                     FileDownloader.loadFileAsync(url: url!) { (path, error) in
+                         print("Descarga completada en : \(path!)")
+                         DispatchQueue.main.async { () -> Void in
+                             self.showFileWithPath(path: path!)
+                          }
+                     }
+            } else if ["tel", "sms", "facetime", "mailto", "whatsapp", "twitter", "twitterauth", "fb", "fbapi", "fbauth2", "fbshareextension", "fb-messenger-api", "viber", "wechat", "line", "instagram", "instagram-stories", "googlephotos"].contains(url?.scheme) {
+                // Comportamiento para otros tipos de enlaces (tel, sms, etc.)
+                
+                if UIApplication.shared.canOpenURL(url!) {
+                    UIApplication.shared.open(url!)
+                } else {
+                    print("Can't open url on this device")
+                }
+                decisionHandler(.cancel)
+            } else {
+                // Permite la navegación normal para otros enlaces
+                decisionHandler(.allow)
             }
-        }
-        else if ["tel", "sms", "facetime", "mailto", "whatsapp", "twitter", "twitterauth", "fb", "fbapi", "fbauth2", "fbshareextension", "fb-messenger-api", "viber", "wechat", "line", "instagram", "instagram-stories", "googlephotos"].contains(url?.scheme)
-        {
-            if UIApplication.shared.canOpenURL(url!) {
-                UIApplication.shared.open(url!)
-            }
-            else {
-                print("Can't open url on this device")
-            }
-            decisionHandler(.cancel)
-        }
-        else
-        {
+        } else {
+            // Permite la navegación normal si no se puede determinar la extensión del archivo
             decisionHandler(.allow)
         }
     }
+
 }
