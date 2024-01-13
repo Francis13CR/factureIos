@@ -57,8 +57,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Camera Access</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Location Access</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -69,8 +67,6 @@
 	<string>Read Write Access to Photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Read Write Access to Photos</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>Installs Statistics</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -87,6 +83,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Se requiere acceso a la cámara para tomar fotografías de perfil y/o productos. Las imágenes capturadas se utilizarán exclusivamente con el propósito de representar visualmente el perfil del usuario o el producto dentro de la aplicación. No se utilizarán con ningún otro fin ni se compartirán con terceros. Garantizamos la privacidad y seguridad de sus imágenes.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
