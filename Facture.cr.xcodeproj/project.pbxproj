@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1530F1302CB454B900E3951F /* BarcodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1530F12F2CB454AA00E3951F /* BarcodeScanner.swift */; };
 		8BE7C13A24E29DDA007CB4E5 /* htmlapp in Resources */ = {isa = PBXBuildFile; fileRef = 8BE7C13924E29DD9007CB4E5 /* htmlapp */; };
 		8BEA476E22B72C4C0034118D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEA476D22B72C4C0034118D /* AppDelegate.swift */; };
 		8BEA477022B72C4C0034118D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEA476F22B72C4C0034118D /* ViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1530F12F2CB454AA00E3951F /* BarcodeScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScanner.swift; sourceTree = "<group>"; };
 		8BE7C13924E29DD9007CB4E5 /* htmlapp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = htmlapp; sourceTree = "<group>"; };
 		8BEA476A22B72C4C0034118D /* Facture.cr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facture.cr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BEA476D22B72C4C0034118D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				8BE7C13924E29DD9007CB4E5 /* htmlapp */,
 				8BEA476D22B72C4C0034118D /* AppDelegate.swift */,
 				8BEA476F22B72C4C0034118D /* ViewController.swift */,
+				1530F12F2CB454AA00E3951F /* BarcodeScanner.swift */,
 				8BEA477122B72C4C0034118D /* Main.storyboard */,
 				8BEA477422B72C590034118D /* Assets.xcassets */,
 				8BEA477622B72C590034118D /* LaunchScreen.storyboard */,
@@ -140,6 +143,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1530F1302CB454B900E3951F /* BarcodeScanner.swift in Sources */,
 				8BEA477022B72C4C0034118D /* ViewController.swift in Sources */,
 				8BEA476E22B72C4C0034118D /* AppDelegate.swift in Sources */,
 			);

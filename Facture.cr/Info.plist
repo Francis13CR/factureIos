@@ -84,7 +84,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>Se requiere acceso a la cámara para tomar fotografías de perfil y/o productos. Las imágenes capturadas se utilizarán exclusivamente con el propósito de representar visualmente el perfil del usuario o el producto dentro de la aplicación. No se utilizarán con ningún otro fin ni se compartirán con terceros. Garantizamos la privacidad y seguridad de sus imágenes.</string>
+	<string>Se requiere acceso a la cámara para tomar fotografías de perfil y/o escanear productos . Las imágenes capturadas se utilizarán exclusivamente con el propósito de representar visualmente el perfil del usuario o el producto dentro de la aplicación. No se utilizarán con ningún otro fin ni se compartirán con terceros. Garantizamos la privacidad y seguridad de sus imágenes.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
